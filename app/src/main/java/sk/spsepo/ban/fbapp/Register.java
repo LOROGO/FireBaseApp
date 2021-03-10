@@ -55,12 +55,17 @@ public class Register extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(email)){
                     mEmail.setError("Email is Required");
+                    return;
                 }
                 if (TextUtils.isEmpty(password)){
                     mPassword.setError("Password is Required");
+                    return;
+
                 }
                 if (password.length() < 6){
                     mPassword.setError("Password must be 6 or longer");
+                    return;
+
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
