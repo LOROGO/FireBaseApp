@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "206237124222",
+    "project_id": "fbapp-ba93b",
+    "storage_bucket": "fbapp-ba93b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206237124222:android:7e070099ce48576b8c7a2f",
+        "android_client_info": {
+          "package_name": "sk.spsepo.ban.fbapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "206237124222-a3lf5m1h8tnvsbtst11ggruhtl6pi825.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sk.spsepo.ban.fbapp",
+            "certificate_hash": "24d44680b39988a93018251d592cf71b9fba873c"
+          }
+        },
+        {
+          "client_id": "206237124222-cu4prtef3as2g5pgr96kpjiq1pb24tt9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB63EsAfM45nVVvPSn8_m7sxwFPZcmz3s0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "206237124222-cu4prtef3as2g5pgr96kpjiq1pb24tt9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
