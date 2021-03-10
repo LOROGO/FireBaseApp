@@ -38,7 +38,7 @@ public class Register extends AppCompatActivity {
         mPhone = findViewById(R.id.phone);
 
         mRegisterBtn = findViewById(R.id.regButt);
-        mLoginBtn = findViewById(R.id.loginButt);
+        mLoginBtn = findViewById(R.id.login1);
 
         fAuth = FirebaseAuth.getInstance();
         progressBar = findViewById(R.id.progressBar);
@@ -46,6 +46,12 @@ public class Register extends AppCompatActivity {
         if (fAuth.getCurrentUser() != null){
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
+        mLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), Login.class));
+            }
+        });
 
         mRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
