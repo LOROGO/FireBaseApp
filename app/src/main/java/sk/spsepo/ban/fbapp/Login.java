@@ -74,7 +74,10 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(Login.this, "Logged in", Toast.LENGTH_SHORT);
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            Intent mainIntent = new Intent(Login.this, MainActivity.class);
+                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(mainIntent);
+                            finish();
                         }else{
                             Toast.makeText(Login.this, "Error "+task.getException().getMessage(), Toast.LENGTH_SHORT);
                             progressBar.setVisibility(View.INVISIBLE);

@@ -108,7 +108,10 @@ public class Register extends AppCompatActivity {
                                    Log.d(TAG, "onSuccesss: user Profile is created for "+userID);
                                }
                            });
-                           startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                           Intent mainIntent = new Intent(Register.this, MainActivity.class);
+                           mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                           startActivity(mainIntent);
+                           finish();
                        }else {
                             Toast.makeText(Register.this, "Error "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.INVISIBLE);
