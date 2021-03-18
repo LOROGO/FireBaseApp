@@ -19,6 +19,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -28,13 +31,15 @@ import java.util.Map;
 public class Register extends AppCompatActivity {
 
     public static final String TAG = "TAG";
+
     EditText mFullName, mEmail, mPassword, mPhone;
     Button mRegisterBtn;
     TextView mLoginBtn;
     FirebaseAuth fAuth;
     ProgressBar progressBar;
-    FirebaseFirestore fStore;
+    //FirebaseFirestore fStore;
     String userID;
+    FirebaseUser current_user;
 
 
 
@@ -52,7 +57,8 @@ public class Register extends AppCompatActivity {
         mLoginBtn = findViewById(R.id.login1);
 
         fAuth = FirebaseAuth.getInstance();
-        fStore = FirebaseFirestore.getInstance();
+       // fStore = FirebaseFirestore.getInstance();
+
         progressBar = findViewById(R.id.progressBar);
 
         if (fAuth.getCurrentUser() != null){
@@ -95,19 +101,35 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                        if (task.isSuccessful()) {
-                           Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
+
+                           current_user = fAuth.getCurrentUser();
                            userID = fAuth.getCurrentUser().getUid();
-                           DocumentReference documentReference = fStore.collection("users").document(userID);
-                           Map<String, Object> user = new HashMap<>();
-                           user.put("fName", fullname);
+                           DatabaseReference mdatabase = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReferenceFromUrl("https://fbapp-ba93b-default-rtdb.firebaseio.com/").child("Users").child(userID);
+                           
+
+
+                           //DocumentReference documentReference = fStore.collection("users").document(userID);
+                           Map<String, String> user = new HashMap<>();
+                           user.put("fname", fullname);
+                           user.put("status", "Default status");
+                           user.put("image", "default_avatar");
+                           user.put("thumb_image", "default_avatar");
                            user.put("email", email);
                            user.put("phone", phone);
-                           documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                           mdatabase.setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                @Override
                                public void onSuccess(Void aVoid) {
                                    Log.d(TAG, "onSuccesss: user Profile is created for "+userID);
+                                   Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
                                }
                            });
+                           /*documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                               @Override
+                               public void onSuccess(Void aVoid) {
+                                   Log.d(TAG, "onSuccesss: user Profile is created for "+userID);
+                                   Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
+                               }
+                           });*/
                            Intent mainIntent = new Intent(Register.this, MainActivity.class);
                            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                            startActivity(mainIntent);
