@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), Login.class));
             finish();
         }else if (item.getItemId() == R.id.main_settings_btn){
+            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
 
         }else if (item.getItemId() == R.id.main_all_btn){
 

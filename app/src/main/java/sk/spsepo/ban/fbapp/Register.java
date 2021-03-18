@@ -105,7 +105,7 @@ public class Register extends AppCompatActivity {
                            current_user = fAuth.getCurrentUser();
                            userID = fAuth.getCurrentUser().getUid();
                            DatabaseReference mdatabase = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReferenceFromUrl("https://fbapp-ba93b-default-rtdb.firebaseio.com/").child("Users").child(userID);
-                           
+
 
 
                            //DocumentReference documentReference = fStore.collection("users").document(userID);
