@@ -3,7 +3,10 @@ package sk.spsepo.ban.fbapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,10 @@ public class SettingsActivity extends AppCompatActivity {
     private CircleImageView mImage;
     private TextView mName;
     private TextView mStatus;
+    private Button statusBtn;
+    private Button imageBtn;
+
+    private static final int GALLERY_PICK = 0;
 
 
 
@@ -36,6 +43,8 @@ public class SettingsActivity extends AppCompatActivity {
         mImage = (CircleImageView) findViewById(R.id.settings_image);
         mName = (TextView) findViewById(R.id.settings_display_name);
         mStatus = (TextView) findViewById(R.id.settings_status);
+        statusBtn = findViewById(R.id.settings_status_btn);
+        imageBtn = findViewById(R.id.settings_image_btn);
 
 
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -62,5 +71,22 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         });
+        statusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingsActivity.this, StatusActivity.class));
+            }
+        });
+        imageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent galleryIntent = new Intent();
+                galleryIntent.setType("image/*");
+                galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+                startActivityForResult(Intent.createChooser(galleryIntent, "Pick Image"), GALLERY_PICK );
+            }
+        });
+
     }
 }
