@@ -16,6 +16,8 @@ import android.widget.Toolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.net.Inet4Address;
+
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
 
         }else if (item.getItemId() == R.id.main_all_btn){
+            startActivity(new Intent(getApplicationContext(), AllUsers.class));
 
         }
 
