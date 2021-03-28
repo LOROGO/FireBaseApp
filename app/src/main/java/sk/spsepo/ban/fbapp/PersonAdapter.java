@@ -71,6 +71,7 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
                     = itemView.findViewById(R.id.fname);
             status = itemView.findViewById(R.id.status);
 
+
         }
     }
 }

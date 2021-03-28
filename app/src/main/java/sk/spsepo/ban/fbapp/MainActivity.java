@@ -23,11 +23,15 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionPagerAdapter;
     private TabLayout mTabLayout;
+    FirebaseAuth fAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fAuth = FirebaseAuth.getInstance();
+        if (fAuth.getCurrentUser()==null)logout();
         setTitle("Main");
 
 
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void logout(View view){
+    public void logout(){
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getApplicationContext(), Login.class));
         finish();
