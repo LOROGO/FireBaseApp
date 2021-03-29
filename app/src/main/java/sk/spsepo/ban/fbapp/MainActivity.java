@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
         if (fAuth.getCurrentUser()==null)logout();
-        setTitle("Main");
+        setTitle("Vojs");
 
 
 
