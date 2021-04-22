@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Voice</string>
+    <string name="app_name">Vojs</string>
     <string name="sEmail">Email</string>
     <string name="sFullname">Fullname</string>
     <string name="sPassword">Password</string>
