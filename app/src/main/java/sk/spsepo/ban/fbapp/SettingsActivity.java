@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,15 +21,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.util.concurrent.atomic.AtomicMarkableReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private DatabaseReference mUserDatabase;
-    private FirebaseUser mCurrentUser;
+    DatabaseReference mUserDatabase;
+    FirebaseUser mCurrentUser;
 
     private CircleImageView mImage;
     private TextView mName;
@@ -36,10 +44,13 @@ public class SettingsActivity extends AppCompatActivity {
 
     private static final int GALLERY_PICK = 0;
 
+    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
@@ -99,7 +110,39 @@ public class SettingsActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                Toast.makeText(SettingsActivity.this, resultUri.toString(),Toast.LENGTH_LONG).show();
+                final StorageReference imgPath = storageRef.child("icons").child(mCurrentUser.getUid()+".jpg");
+               // StorageReference imgPth2 = FirebaseStorage.getInstance().getReferenceFromUrl("gs://fbapp-ba93b.appspot.com/icons");
+
+
+
+                imgPath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        imgPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Uri downloadUrl = uri;
+                                mUserDatabase.child("image").setValue(uri.toString());
+                                Toast.makeText(SettingsActivity.this, uri.toString(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                });
+
+                        /*.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(SettingsActivity.this, "ide tooo", Toast.LENGTH_LONG).show();
+                            String img_url = task.getResult().getStorage().getDownloadUrl().toString();
+                            mUserDatabase.child("image").setValue(img_url);
+
+                        }
+                    }
+                });*/
+
+
+               // Toast.makeText(SettingsActivity.this, resultUri.toString(),Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }

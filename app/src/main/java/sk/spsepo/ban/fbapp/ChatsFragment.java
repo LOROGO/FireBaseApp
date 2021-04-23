@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +32,8 @@ public class ChatsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    View parentHolder;
+
 
     public ChatsFragment() {
         // Required empty public constructor
@@ -66,10 +70,18 @@ public class ChatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chats, container, false);
+        parentHolder = inflater.inflate(R.layout.fragment_chats, container, false);
 
 
+        Button chatsButton = (Button) parentHolder.findViewById(R.id.chatsButton);
+        chatsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "sex", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return parentHolder;
 
 
     }
