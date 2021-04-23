@@ -24,7 +24,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="@font/alef"
             android:textSize="30sp"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/personAvatar"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -36,12 +36,12 @@
             android:fontFamily="@font/aldrich"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/personAvatar"
             app:layout_constraintTop_toBottomOf="@+id/fname"
             app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/personAvatar"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginStart="2dp"

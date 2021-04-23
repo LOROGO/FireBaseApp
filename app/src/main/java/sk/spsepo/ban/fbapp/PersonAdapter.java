@@ -3,6 +3,7 @@ package sk.spsepo.ban.fbapp;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +40,7 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
         // "person.class")to appropriate view in Card
         // view (here "person.xml")
         holder.status.setText(model.getStatus());
+        holder.personAvatar.setImageDrawable(null);
 
 
     }
@@ -63,13 +65,14 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
     class personsViewholder
             extends RecyclerView.ViewHolder {
         TextView fname, status;
+        ImageView personAvatar;
         public personsViewholder(@NonNull View itemView)
         {
             super(itemView);
 
-            fname
-                    = itemView.findViewById(R.id.fname);
+            fname = itemView.findViewById(R.id.fname);
             status = itemView.findViewById(R.id.status);
+            personAvatar = itemView.findViewById(R.id.personAvatar);
 
 
         }
