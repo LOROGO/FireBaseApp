@@ -1,5 +1,6 @@
 package sk.spsepo.ban.fbapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -77,7 +78,9 @@ public class ChatsFragment extends Fragment {
         chatsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "sex", Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getActivity(), Login.class));
+                getActivity().finish();
             }
         });
 
