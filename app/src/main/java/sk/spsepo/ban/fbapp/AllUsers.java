@@ -42,6 +42,7 @@ public class AllUsers extends AppCompatActivity {
         // Connecting object of required Adapter class to
         // the Adapter class itself
         adapter = new PersonAdapter(options);
+
         // Connecting Adapter class with the Recycler view*/
         recyclerView.setAdapter(adapter);
     }

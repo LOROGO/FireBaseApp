@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -51,12 +53,18 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
     @NonNull
     @Override
     public personsViewholder
-    onCreateViewHolder(@NonNull ViewGroup parent,
+    onCreateViewHolder(@NonNull final ViewGroup parent,
                        int viewType)
     {
         View view
                 = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.person, parent, false);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(parent.getContext(), "onCLick", Toast.LENGTH_SHORT).show();
+            }
+        });
         return new PersonAdapter.personsViewholder(view);
     }
 
