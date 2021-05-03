@@ -6,33 +6,36 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/DisplayName"
+        android:id="@+id/displayName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="DisplayName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.551" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/DisplayName"
+        android:layout_width="128dp"
+        android:layout_height="140dp"
+        app:layout_constraintBottom_toTopOf="@+id/displayName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/default_avatar" />
 
     <TextView
-        android:id="@+id/status"
+        android:id="@+id/statusProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
         android:text="Current User Status"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DisplayName" />
+        app:layout_constraintTop_toBottomOf="@+id/displayName" />
 
     <Button
         android:id="@+id/request"
@@ -42,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status" />
+        app:layout_constraintTop_toBottomOf="@+id/statusProfile" />
 
     <TextView
         android:id="@+id/friends"
@@ -52,6 +55,6 @@
         app:layout_constraintBottom_toTopOf="@+id/request"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/status"
+        app:layout_constraintTop_toBottomOf="@+id/statusProfile"
         app:layout_constraintVertical_bias="0.56" />
 </androidx.constraintlayout.widget.ConstraintLayout>

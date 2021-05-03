@@ -1,5 +1,8 @@
 package sk.spsepo.ban.fbapp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,28 +14,36 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.squareup.picasso.Picasso;
 
 // FirebaseRecyclerAdapter is a class provided by
 // FirebaseUI. it provides functions to bind, adapt and show
 // database contents in a Recycler View
+
 public class PersonAdapter extends FirebaseRecyclerAdapter<
         Person, PersonAdapter.personsViewholder> {
+    Person model;
+    personsViewholder holder;
+    Context con;
 
     public PersonAdapter(
-            @NonNull FirebaseRecyclerOptions<Person> options)
+            @NonNull FirebaseRecyclerOptions<Person> options, AllUsers allUsers)
     {
         super(options);
+        con = allUsers;
     }
 
     // Function to bind the view in Card view(here
     // "person.xml") iwth data in
     // model class(here "person.class")
+
     @Override
     protected void
     onBindViewHolder(@NonNull personsViewholder holder,
-                     int position, @NonNull Person model)
+                     final int position, @NonNull Person model)
     {
-
+        this.model = model;
+        this.holder = holder;
         // Add firstname from model class (here
         // "person.class")to appropriate view in Card
         // view (here "person.xml")
@@ -42,7 +53,18 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
         // "person.class")to appropriate view in Card
         // view (here "person.xml")
         holder.status.setText(model.getStatus());
-        holder.personAvatar.setImageDrawable(null);
+        Picasso.with(con).load(model.getImage()).into(holder.personAvatar);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(con, ProfileActivity.class);
+                String profile_uid = getRef(position).getKey();
+                profileIntent.putExtra("UID", profile_uid);
+                con.startActivity(profileIntent);
+            }
+        });
+
 
 
     }
@@ -59,12 +81,16 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
         View view
                 = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.person, parent, false);
+        //Picasso.with(parent.getContext()).load(model.getImage()).into(holder.personAvatar);
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(parent.getContext(), "onCLick", Toast.LENGTH_SHORT).show();
+                Toast.makeText(parent.getContext(), model.getFname(), Toast.LENGTH_SHORT).show();
+
             }
         });
+        //Picasso.with(parent.getContext()).load(Uri.parse(model.getImage())).into(holder.personAvatar);
         return new PersonAdapter.personsViewholder(view);
     }
 
@@ -78,8 +104,8 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
         {
             super(itemView);
 
-            fname = itemView.findViewById(R.id.fname);
-            status = itemView.findViewById(R.id.status);
+            fname = itemView.findViewById(R.id.fnamePerson);
+            status = itemView.findViewById(R.id.statusPerson);
             personAvatar = itemView.findViewById(R.id.personAvatar);
 
 

@@ -7,6 +7,8 @@ public class Person {
         // to firstname keyword in database
         private String fname;
 
+        private String image;
+
         // Variable to store data corresponding
         // to lastname keyword in database
         private String status;
@@ -21,6 +23,12 @@ public class Person {
 
 
     public Person() {
+    }
+
+    public Person(String fname, String image, String status) {
+        this.fname = fname;
+        this.image = image;
+        this.status = status;
     }
 
     // Getter and setter method
@@ -41,4 +49,11 @@ public class Person {
             this.status = status;
         }
 
+    public String getImage() {
+        return image;
     }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+}

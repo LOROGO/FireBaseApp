@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -24,13 +26,23 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.iceteck.silicompressorr.FileUtils;
+import com.iceteck.silicompressorr.SiliCompressor;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicMarkableReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
+import id.zelory.compressor.constraint.Compression;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -112,10 +124,24 @@ public class SettingsActivity extends AppCompatActivity {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                final StorageReference imgPath = storageRef.child("icons").child(mCurrentUser.getUid()+".jpg");
-               // StorageReference imgPth2 = FirebaseStorage.getInstance().getReferenceFromUrl("gs://fbapp-ba93b.appspot.com/icons");
+                final Uri resultUri = result.getUri();
 
+
+
+                /*try {
+                    imageBitmap = SiliCompressor.with(SettingsActivity.this).getCompressBitmap(String.valueOf(resultUri));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+
+
+
+
+
+                final StorageReference thumb_image = storageRef.child("icons").child("thumbs").child(mCurrentUser.getUid()+".jpg");
+                final StorageReference imgPath = storageRef.child("icons").child(mCurrentUser.getUid()+".jpg");
+
+               // StorageReference imgPth2 = FirebaseStorage.getInstance().getReferenceFromUrl("gs://fbapp-ba93b.appspot.com/icons");
 
 
                 imgPath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -123,8 +149,34 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         imgPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
-                            public void onSuccess(Uri uri) {
+                            public void onSuccess(final Uri uri) {
                                 mUserDatabase.child("image").setValue(uri.toString());
+                               /* Bitmap full = BitmapFactory.decodeFile("");
+                                Bitmap reduced = ImageResizer.reduceBitmapSize(full, 240000);
+
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                reduced.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                byte[] data = baos.toByteArray();
+
+
+                                UploadTask uploadTask = thumb_image.putBytes(data);
+                                uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                        String thumb_Url = Objects.requireNonNull(task.getResult()).getStorage().getDownloadUrl().toString();
+                                        if (task.isSuccessful()){
+                                            Map update = new HashMap();
+                                            update.put("image", uri.toString());
+                                            update.put("thumb_image", thumb_Url);
+                                            mUserDatabase.updateChildren(update);
+
+                                        }
+                                    }
+                                });*/
+
+
+
+
                                 Toast.makeText(SettingsActivity.this, uri.toString(), Toast.LENGTH_LONG).show();
                             }
                         });
