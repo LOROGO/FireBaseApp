@@ -113,7 +113,6 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(parent.getContext(), model.getFname(), Toast.LENGTH_SHORT).show();
 
             }
         });
