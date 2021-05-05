@@ -2,6 +2,8 @@ package sk.spsepo.ban.fbapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
@@ -31,6 +35,11 @@ public class ChatActivity extends AppCompatActivity {
     ImageButton sendBtn;
     EditText sendTxt;
 
+    MessageAdapter messageAdapter;
+    List<Chat> mchat;
+
+    RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,15 @@ public class ChatActivity extends AppCompatActivity {
 
         databaseReference
                 = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReferenceFromUrl("https://fbapp-ba93b-default-rtdb.firebaseio.com/");
+
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+
         name = findViewById(R.id.chatName);
         image = findViewById(R.id.chatImg);
         sendBtn = findViewById(R.id.btnSend);
@@ -65,6 +83,8 @@ public class ChatActivity extends AppCompatActivity {
                 //name.setText(snapshot.child("fname").getValue().toString());
                 //Picasso.with(ChatActivity.this).load(snapshot.child("image").getValue().toString()).into(image);
                 setTitle(snapshot.child("fname").getValue().toString());
+
+                readMessages(fAuth.getUid(),UID,snapshot.child("image").getValue().toString());
             }
 
             @Override
@@ -82,5 +102,31 @@ public class ChatActivity extends AppCompatActivity {
         hashMap.put("message", message);
         databaseReference.child("Chats").push().setValue(hashMap);
 
+    }
+
+    private void readMessages(final String myid, final String userid, final String imageurl){
+      mchat=new ArrayList<>();
+      databaseReference = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReferenceFromUrl("https://fbapp-ba93b-default-rtdb.firebaseio.com/").child("Chats").child(fAuth.getUid());
+      databaseReference.addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+              mchat.clear();
+              for ( DataSnapshot snapshot : dataSnapshot.getChildren()){
+                  Chat chat = snapshot.getValue(Chat.class);
+                  if (chat.getReciever().equals(myid) && chat.getSender().equals(userid)||chat.getReciever().equals(userid) && chat.getSender().equals(myid)){
+                      mchat.add(chat);
+                  }
+
+                  messageAdapter = new MessageAdapter(ChatActivity.this, mchat, imageurl);
+                  recyclerView.setAdapter(messageAdapter);
+
+              }
+          }
+
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {
+
+          }
+      });
     }
 }
