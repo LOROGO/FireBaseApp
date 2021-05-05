@@ -92,7 +92,7 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
 
                 if (snapshot.getValue()!=null){
                     aa = true;
-                }
+                }else aa = false;
                 if (aa){
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override

@@ -2,12 +2,12 @@ package sk.spsepo.ban.fbapp;
 
 public class Chat {
     private String sender;
-    private String reciever;
+    private String receiver;
     private String message;
 
-    public Chat(String sender, String reciever, String message) {
+    public Chat(String sender, String receiver, String message) {
         this.sender = sender;
-        this.reciever = reciever;
+        this.receiver = receiver;
         this.message = message;
     }
     public Chat(){
@@ -22,12 +22,12 @@ public class Chat {
         this.sender = sender;
     }
 
-    public String getReciever() {
-        return reciever;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setReciever(String reciever) {
-        this.reciever = reciever;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getMessage() {

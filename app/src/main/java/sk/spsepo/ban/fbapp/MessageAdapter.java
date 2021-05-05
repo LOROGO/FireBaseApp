@@ -54,7 +54,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.show_message.setText(chat.getMessage());
 
         if (imageurl.equals("default")){
-            holder.profile_image.setImageResource(R.mipmap.ic_launcher);
+            holder.profile_image.setImageResource(R.drawable.default_avatar2);
         }
         else {
             Picasso.with(mContext).load(imageurl).into(holder.profile_image);

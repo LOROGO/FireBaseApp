@@ -88,7 +88,7 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<
                 if (snapshot.hasChildren()) {
                     if (snapshot.child("request").getValue().toString().equals("received")) {
                         aa = true;
-                    }
+                    }else aa = false;
                     if (aa) {
                         holder.imgBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -96,7 +96,7 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<
                                 reqAccept();
                             }
                         });
-                    } else if (!aa) {
+                    } else {
 
                         holder.itemView.setVisibility(View.GONE);
                         holder.itemView.getLayoutParams().height = 0;

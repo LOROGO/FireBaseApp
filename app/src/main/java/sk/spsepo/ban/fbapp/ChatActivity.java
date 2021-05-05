@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +27,7 @@ import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
+    DatabaseReference reference;
     TextView name;
     ImageView image;
 
@@ -37,7 +39,7 @@ public class ChatActivity extends AppCompatActivity {
 
     MessageAdapter messageAdapter;
     List<Chat> mchat;
-
+    String UID;
     RecyclerView recyclerView;
 
 
@@ -52,8 +54,8 @@ public class ChatActivity extends AppCompatActivity {
                 = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReferenceFromUrl("https://fbapp-ba93b-default-rtdb.firebaseio.com/");
 
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
+        recyclerView = findViewById(R.id.messRecyclerView);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -63,19 +65,20 @@ public class ChatActivity extends AppCompatActivity {
         image = findViewById(R.id.chatImg);
         sendBtn = findViewById(R.id.btnSend);
         sendTxt = findViewById(R.id.text_send);
-        final String UID = getIntent().getStringExtra("UID");
+        UID = getIntent().getStringExtra("UID");
+        if(!sendTxt.getText().equals("")) {
+            sendBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String msg = sendTxt.getText().toString();
+                    if (!msg.equals("")) {
+                        sendMessage(fAuth.getUid(), UID, msg);
+                        sendTxt.setText("");
+                    }
 
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String msg = sendTxt.getText().toString();
-                if (!msg.equals("")){
-                    sendMessage(fAuth.getUid(), UID, msg);
-                    sendTxt.setText("");
                 }
-
-            }
-        });
+            });
+        }
 
         databaseReference.child("Users").child(UID).addValueEventListener(new ValueEventListener() {
             @Override
@@ -106,15 +109,25 @@ public class ChatActivity extends AppCompatActivity {
 
     private void readMessages(final String myid, final String userid, final String imageurl){
       mchat=new ArrayList<>();
-      databaseReference = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReferenceFromUrl("https://fbapp-ba93b-default-rtdb.firebaseio.com/").child("Chats").child(fAuth.getUid());
-      databaseReference.addValueEventListener(new ValueEventListener() {
+      reference = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReference().child("Chats");
+        Toast.makeText(this, databaseReference.toString(), Toast.LENGTH_LONG).show();
+      reference.addValueEventListener(new ValueEventListener() {
           @Override
           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
               mchat.clear();
-              for ( DataSnapshot snapshot : dataSnapshot.getChildren()){
+              for ( DataSnapshot snapshot :
+                      dataSnapshot.getChildren()){
                   Chat chat = snapshot.getValue(Chat.class);
-                  if (chat.getReciever().equals(myid) && chat.getSender().equals(userid)||chat.getReciever().equals(userid) && chat.getSender().equals(myid)){
-                      mchat.add(chat);
+                  if (chat!=null) {
+                      if (chat.getReceiver()
+                              .equals
+                                      (myid)
+                              && chat.getSender().equals(userid)
+                              || chat.getReceiver().equals(userid)
+                              && chat.getSender().equals(myid)) {
+                          mchat.add(chat);
+                      }
+                      Toast.makeText(ChatActivity.this, chat.getReceiver(), Toast.LENGTH_LONG).show();
                   }
 
                   messageAdapter = new MessageAdapter(ChatActivity.this, mchat, imageurl);

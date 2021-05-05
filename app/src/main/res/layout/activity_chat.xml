@@ -8,8 +8,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messRecyclerView"
-        android:layout_width="406dp"
-        android:layout_height="676dp"
+        android:layout_width="398dp"
+        android:layout_height="192dp"
 
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
