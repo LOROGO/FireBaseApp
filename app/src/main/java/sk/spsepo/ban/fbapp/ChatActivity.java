@@ -61,8 +61,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
 
-        name = findViewById(R.id.chatName);
-        image = findViewById(R.id.chatImg);
+        
         sendBtn = findViewById(R.id.btnSend);
         sendTxt = findViewById(R.id.text_send);
         UID = getIntent().getStringExtra("UID");
