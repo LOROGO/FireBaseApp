@@ -74,7 +74,7 @@ public class ChatsFragment extends Fragment {
         parentHolder = inflater.inflate(R.layout.fragment_chats, container, false);
 
 
-        Button chatsButton = (Button) parentHolder.findViewById(R.id.chatsButton);
+        /*Button chatsButton = (Button) parentHolder.findViewById(R.id.chatsButton);
         chatsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,10 +82,13 @@ public class ChatsFragment extends Fragment {
                 startActivity(new Intent(getActivity(), Login.class));
                 getActivity().finish();
             }
-        });
+        });*/
 
         return parentHolder;
 
+
+    }
+    public void load(String UID){
 
     }
 }

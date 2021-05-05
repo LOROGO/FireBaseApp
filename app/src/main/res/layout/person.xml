@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center|top"
     android:layout_marginHorizontal="10dp"
     android:layout_marginTop="10dp"
     android:layout_marginBottom="20dp"
@@ -14,23 +14,24 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="76dp">
+        android:layout_height="76dp"
+        android:layout_gravity="center|top">
 
         <TextView
             android:id="@+id/fnamePerson"
-            android:layout_width="193dp"
-            android:layout_height="22dp"
+            android:layout_width="222dp"
+            android:layout_height="31dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/alef"
-            android:textSize="30sp"
+            android:textSize="24sp"
             app:layout_constraintStart_toEndOf="@+id/personAvatar"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/statusPerson"
-            android:layout_width="172dp"
-            android:layout_height="18dp"
+            android:layout_width="219dp"
+            android:layout_height="30dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="12dp"
             android:fontFamily="@font/aldrich"
@@ -38,7 +39,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/personAvatar"
             app:layout_constraintTop_toBottomOf="@+id/fnamePerson"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/personAvatar"

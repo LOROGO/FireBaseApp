@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -29,8 +30,8 @@ import java.util.ArrayList;
 // database contents in a Recycler View
 
 
-public class PersonAdapter extends FirebaseRecyclerAdapter<
-        Person, PersonAdapter.personsViewholder> {
+public class FriendsAdapter extends FirebaseRecyclerAdapter<
+        Person, FriendsAdapter.personsViewholder> {
     Person model;
     personsViewholder holder;
     Context con;
@@ -38,12 +39,13 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
     ArrayList<String> a;
     Boolean aa;
     FirebaseAuth fAuth;
+    int position;
 
-    public PersonAdapter(
-            @NonNull FirebaseRecyclerOptions<Person> options, AllUsers allUsers)
+    public FriendsAdapter(
+            @NonNull FirebaseRecyclerOptions<Person> options, FragmentActivity fragmentActivity)
     {
         super(options);
-        con = allUsers;
+        con = fragmentActivity;
     }
 
     // Function to bind the view in Card view(here
@@ -55,6 +57,7 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
     onBindViewHolder(@NonNull final personsViewholder holder,
                      final int position, @NonNull Person model)
     {
+        this.position = position;
         a = null;
         aa = false;
         databaseReference
@@ -76,16 +79,47 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(con, getRef(position).getKey(), Toast.LENGTH_SHORT).show();
-                Intent profileIntent = new Intent(con, ProfileActivity.class);
-                String profile_uid = getRef(position).getKey();
-                profileIntent.putExtra("UID", profile_uid);
-                con.startActivity(profileIntent);
+                ((MainActivity)con).change2chat(fAuth.getUid());
+
 
             }
         });
 
+        databaseReference.child("friendList").child(fAuth.getUid()).child(getRef(position).getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot snapshot) {
 
+
+                if (snapshot.getValue()!=null){
+                    aa = true;
+                }
+                if (aa){
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(con, ChatActivity.class);
+                            intent.putExtra("UID", getRef(position).getKey());
+                            con.startActivity(intent);
+
+
+                        }
+                    });
+                }else if (!aa){
+
+                    holder.itemView.setVisibility(View.GONE);
+                    holder.itemView.getLayoutParams().height = 0;
+                    holder.itemView.getLayoutParams().width = 0;
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
 
@@ -110,15 +144,10 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
         //Picasso.with(parent.getContext()).load(model.getImage()).into(holder.personAvatar);
 
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(parent.getContext(), model.getFname(), Toast.LENGTH_SHORT).show();
 
-            }
-        });
+
         //Picasso.with(parent.getContext()).load(Uri.parse(model.getImage())).into(holder.personAvatar);
-        return new PersonAdapter.personsViewholder(view);
+        return new FriendsAdapter.personsViewholder(view);
     }
 
     // Sub Class to create references of the views in Crad

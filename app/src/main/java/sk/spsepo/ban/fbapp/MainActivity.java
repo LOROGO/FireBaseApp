@@ -33,14 +33,23 @@ public class MainActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         if (fAuth.getCurrentUser()==null)logout();
         setTitle("Vojs");
+        Bundle extras = getIntent().getExtras();
+        int pos = 1;
+        if (extras!=null){
+            pos = extras.getInt("viewPagerPos");
+        }
 
 
 
-    mViewPager = (ViewPager) findViewById(R.id.main_tabPager);
+
+        mViewPager = (ViewPager) findViewById(R.id.main_tabPager);
     mSectionPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-    mViewPager.setAdapter(mSectionPagerAdapter);
+        //ChatsFragment fragment = (ChatsFragment) getFragmentManager().findFragmentById(R.id.fragment_chats);
+       // fragment.<specific_function_name>();
+        mViewPager.setAdapter(mSectionPagerAdapter);
     mTabLayout = (TabLayout) findViewById(R.id.main_tabs);
     mTabLayout.setupWithViewPager(mViewPager);
+    mViewPager.setCurrentItem(pos);
 
 
 
@@ -79,5 +88,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+    public void change2chat(String uid){
+        mViewPager.setCurrentItem(1);
+
     }
 }
