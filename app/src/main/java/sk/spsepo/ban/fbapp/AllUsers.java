@@ -47,11 +47,12 @@ public class AllUsers extends AppCompatActivity {
         // query in the database to fetch appropriate data
         //mbase.child("friendList").child(fAuth.getUid())
         Query s = mbase.child("Users").child(mbase.child("friendList").child(fAuth.getUid()).getKey());
-        Toast.makeText(this,  mbase.child("Users").child(mbase.child("friendList").child(fAuth.getUid()).getKey()).toString(), Toast.LENGTH_LONG).show();
+        Query a = mbase.child("Users").orderByChild("fname").startAt("Mar").endAt("Mar"+"\uf8ff");
         FirebaseRecyclerOptions<Person> options
                 = new FirebaseRecyclerOptions.Builder<Person>()
-                .setQuery(mbase.child("Users"), Person.class)
+                .setQuery(a, Person.class)
                 .build();
+
         // Connecting object of required Adapter class to
         // the Adapter class itself
 
@@ -59,7 +60,6 @@ public class AllUsers extends AppCompatActivity {
 
         // Connecting Adapter class with the Recycler view*/
         recyclerView.setAdapter(adapter);
-
     }
 
     // Function to tell the app to start getting

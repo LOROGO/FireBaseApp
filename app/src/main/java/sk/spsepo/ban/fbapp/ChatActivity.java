@@ -61,7 +61,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
 
-        
+
         sendBtn = findViewById(R.id.btnSend);
         sendTxt = findViewById(R.id.text_send);
         UID = getIntent().getStringExtra("UID");
@@ -109,7 +109,6 @@ public class ChatActivity extends AppCompatActivity {
     private void readMessages(final String myid, final String userid, final String imageurl){
       mchat=new ArrayList<>();
       reference = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReference().child("Chats");
-        Toast.makeText(this, databaseReference.toString(), Toast.LENGTH_LONG).show();
       reference.addValueEventListener(new ValueEventListener() {
           @Override
           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -126,7 +125,6 @@ public class ChatActivity extends AppCompatActivity {
                               && chat.getSender().equals(myid)) {
                           mchat.add(chat);
                       }
-                      Toast.makeText(ChatActivity.this, chat.getReceiver(), Toast.LENGTH_LONG).show();
                   }
 
                   messageAdapter = new MessageAdapter(ChatActivity.this, mchat, imageurl);

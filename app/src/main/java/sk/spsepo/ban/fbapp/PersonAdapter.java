@@ -76,7 +76,6 @@ public class PersonAdapter extends FirebaseRecyclerAdapter<
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(con, getRef(position).getKey(), Toast.LENGTH_SHORT).show();
                 Intent profileIntent = new Intent(con, ProfileActivity.class);
                 String profile_uid = getRef(position).getKey();
                 profileIntent.putExtra("UID", profile_uid);

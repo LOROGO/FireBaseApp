@@ -9,9 +9,10 @@
 
     <EditText
         android:id="@+id/search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="355dp"
+        android:layout_height="46dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></EditText>
 
@@ -25,5 +26,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_bar"
         app:layout_constraintVertical_bias="0.32999998" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="?android:attr/actionModeWebSearchDrawable"
+        tools:layout_editor_absoluteX="363dp"
+        tools:layout_editor_absoluteY="3dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

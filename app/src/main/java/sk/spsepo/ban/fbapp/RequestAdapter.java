@@ -81,31 +81,40 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<
 
 
 
-        databaseReference.child("friendRequest").child(fAuth.getUid()).child(getRef(position).getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("friendRequest").child(fAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot snapshot) {
 
-                if (snapshot.hasChildren()) {
-                    if (snapshot.child("request").getValue().toString().equals("received")) {
-                        aa = true;
-                    }else aa = false;
-                    if (aa) {
-                        holder.imgBtn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                reqAccept();
-                            }
-                        });
-                    } else {
+               /* if (snapshot.hasChildren()) {
+                    if (snapshot.hasChild(getRef(position).getKey())) {
+                        if (snapshot.child("request").getValue().toString().equals("received")) {
+                            aa = true;
+                        } else aa = false;
+                        if (aa) {
+                            holder.imgBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    reqAccept();
+                                }
+                            });
+                        } else {
 
-                        holder.itemView.setVisibility(View.GONE);
-                        holder.itemView.getLayoutParams().height = 0;
-                        holder.itemView.getLayoutParams().width = 0;
+                            holder.itemView.setVisibility(View.GONE);
+                            holder.itemView.getLayoutParams().height = 0;
+                            holder.itemView.getLayoutParams().width = 0;
+
+
+                        }
 
 
                     }
-
-                }
+                }*/
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(con, snapshot.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

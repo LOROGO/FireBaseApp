@@ -85,6 +85,7 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
             }
         });
 
+        
         databaseReference.child("friendList").child(fAuth.getUid()).child(getRef(position).getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot snapshot) {
@@ -94,12 +95,18 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
                     aa = true;
                 }else aa = false;
                 if (aa){
+                    holder.itemView.setVisibility(View.VISIBLE);
+                    holder.itemView.getLayoutParams().width = 500;
+                    holder.itemView.getLayoutParams().height = 200;
+
+
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(con, ChatActivity.class);
                             intent.putExtra("UID", getRef(position).getKey());
                             con.startActivity(intent);
+
 
 
                         }
@@ -142,6 +149,44 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
                 = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.person, parent, false);
         //Picasso.with(parent.getContext()).load(model.getImage()).into(holder.personAvatar);
+        databaseReference.child("friendList").child(fAuth.getUid()).child(getRef(position).getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull final DataSnapshot snapshot) {
+
+
+                if (snapshot.getValue()!=null){
+                    aa = true;
+                }else aa = false;
+                if (aa){
+                    holder.itemView.setVisibility(View.VISIBLE);
+
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(con, ChatActivity.class);
+                            intent.putExtra("UID", getRef(position).getKey());
+                            con.startActivity(intent);
+
+
+
+                        }
+                    });
+                }else if (!aa){
+
+                    holder.itemView.setVisibility(View.GONE);
+                    holder.itemView.getLayoutParams().height = 0;
+                    holder.itemView.getLayoutParams().width = 0;
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
 
