@@ -33,6 +33,7 @@ public class FriendsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    RecyclerView recyclerView;
     DatabaseReference databaseReference;
     FriendsAdapter adapter;
     View parentHolder;
@@ -73,7 +74,7 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         parentHolder = inflater.inflate(R.layout.fragment_friends, container, false);
-        RecyclerView recyclerView = parentHolder.findViewById(R.id.friendsRecView);
+        recyclerView = parentHolder.findViewById(R.id.friendsRecView);
          databaseReference = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReferenceFromUrl("https://fbapp-ba93b-default-rtdb.firebaseio.com/");
 
 
@@ -121,4 +122,9 @@ public class FriendsFragment extends Fragment {
         adapter.stopListening();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        recyclerView.setAdapter(adapter);
     }
+}

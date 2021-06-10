@@ -90,10 +90,16 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<
                         aa = true;
                     }else aa = false;
                     if (aa) {
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(con, snapshot.getKey(), Toast.LENGTH_LONG).show();
+                            }
+                        });
                         holder.imgBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                reqAccept();
+                                reqAccept(snapshot.getKey());
                             }
                         });
                     } else {
@@ -105,6 +111,10 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<
 
                     }
 
+                }else {
+                    holder.itemView.setVisibility(View.GONE);
+                    holder.itemView.getLayoutParams().height = 0;
+                    holder.itemView.getLayoutParams().width = 0;
                 }
             }
             @Override
@@ -153,17 +163,18 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<
         }
     }
 
-    public void reqAccept() {
-        friendListDB.child(fAuth.getUid()).child(getRef(position).getKey()).setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
+    public void reqAccept(final String key) {
+        Toast.makeText(con, getRef(position).getKey(), Toast.LENGTH_SHORT).show();
+        friendListDB.child(fAuth.getUid()).child(key).setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                friendListDB.child(getRef(position).getKey()).child(fAuth.getUid()).setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                friendListDB.child(key).child(fAuth.getUid()).setValue(1).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        friendRequestDB.child(getRef(position).getKey()).child(fAuth.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        friendRequestDB.child(key).child(fAuth.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                friendRequestDB.child(fAuth.getUid()).child(getRef(position).getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                friendRequestDB.child(fAuth.getUid()).child(key).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         holder.itemView.setVisibility(View.GONE);

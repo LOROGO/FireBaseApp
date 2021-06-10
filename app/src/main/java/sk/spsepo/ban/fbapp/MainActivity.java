@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         fAuth = FirebaseAuth.getInstance();
-        if (fAuth.getCurrentUser()==null)logout();
+        if (fAuth.getUid()==null)logout();
         setTitle("Vojs");
         Bundle extras = getIntent().getExtras();
         int pos = 1;
@@ -91,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
     }
     public void change2chat(String uid){
         mViewPager.setCurrentItem(1);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 }

@@ -100,6 +100,9 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
                             Intent intent = new Intent(con, ChatActivity.class);
                             intent.putExtra("UID", getRef(position).getKey());
                             con.startActivity(intent);
+                            holder.itemView.setVisibility(View.VISIBLE);
+                            holder.itemView.getLayoutParams().height = 100;
+                            holder.itemView.getLayoutParams().width = 600;
 
 
                         }
