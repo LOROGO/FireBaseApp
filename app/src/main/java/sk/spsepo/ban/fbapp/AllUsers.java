@@ -47,7 +47,6 @@ public class AllUsers extends AppCompatActivity {
         // query in the database to fetch appropriate data
         //mbase.child("friendList").child(fAuth.getUid())
         Query s = mbase.child("Users").child(mbase.child("friendList").child(fAuth.getUid()).getKey());
-        Toast.makeText(this,  mbase.child("Users").child(mbase.child("friendList").child(fAuth.getUid()).getKey()).toString(), Toast.LENGTH_LONG).show();
         FirebaseRecyclerOptions<Person> options
                 = new FirebaseRecyclerOptions.Builder<Person>()
                 .setQuery(mbase.child("Users"), Person.class)
