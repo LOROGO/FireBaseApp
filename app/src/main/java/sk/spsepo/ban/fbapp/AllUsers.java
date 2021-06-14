@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ public class AllUsers extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EditText searchBar;
+    Button btn;
     PersonAdapter
             adapter; // Create Object of the Adapter class
     DatabaseReference mbase; // Create object of the
@@ -46,12 +49,15 @@ public class AllUsers extends AppCompatActivity {
         // It is a class provide by the FirebaseUI to make a
         // query in the database to fetch appropriate data
         //mbase.child("friendList").child(fAuth.getUid())
-        Query s = mbase.child("Users").child(mbase.child("friendList").child(fAuth.getUid()).getKey());
-        Query a = mbase.child("Users").orderByChild("fname").startAt("Mar").endAt("Mar"+"\uf8ff");
+        Query s = mbase.child("Users").child("Users");
+
         FirebaseRecyclerOptions<Person> options
                 = new FirebaseRecyclerOptions.Builder<Person>()
-                .setQuery(a, Person.class)
+                .setQuery(s, Person.class)
                 .build();
+
+
+
 
         // Connecting object of required Adapter class to
         // the Adapter class itself
@@ -60,6 +66,18 @@ public class AllUsers extends AppCompatActivity {
 
         // Connecting Adapter class with the Recycler view*/
         recyclerView.setAdapter(adapter);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Query a = mbase.child("Users").orderByChild("fname").startAt(searchBar.getText().toString()).endAt(searchBar.getText().toString()+"\uf8ff");
+                FirebaseRecyclerOptions<Person> options
+                        = new FirebaseRecyclerOptions.Builder<Person>()
+                        .setQuery(a, Person.class)
+                        .build();
+                adapter = new PersonAdapter(options, AllUsers.this);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     // Function to tell the app to start getting
@@ -77,4 +95,5 @@ public class AllUsers extends AppCompatActivity {
         super.onStop();
         adapter.stopListening();
     }
+
 }

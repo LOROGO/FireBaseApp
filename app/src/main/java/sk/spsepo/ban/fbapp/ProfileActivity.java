@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +47,7 @@ public class ProfileActivity extends AppCompatActivity {
         friendListDB = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReferenceFromUrl("https://fbapp-ba93b-default-rtdb.firebaseio.com/").child("friendList");
 
         state = "notFriends";
-        requestBtn = findViewById(R.id.requestBtn);
+        requestBtn = findViewById(R.id.requestBtnAccept);
         icon = findViewById(R.id.profile_image);
         displayName = findViewById(R.id.displayName);
         status = findViewById(R.id.statusProfile);

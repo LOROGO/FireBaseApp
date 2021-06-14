@@ -97,7 +97,7 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
                 if (aa){
                     holder.itemView.setVisibility(View.VISIBLE);
                     holder.itemView.getLayoutParams().width = 500;
-                    holder.itemView.getLayoutParams().height = 200;
+                    holder.itemView.getLayoutParams().height = 100;
 
 
                     holder.itemView.setOnClickListener(new View.OnClickListener() {

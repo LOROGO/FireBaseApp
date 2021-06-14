@@ -1,15 +1,12 @@
 package sk.spsepo.ban.fbapp;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -26,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 // FirebaseRecyclerAdapter is a class provided by
 // FirebaseUI. it provides functions to bind, adapt and show
@@ -68,6 +64,8 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<
         fAuth = FirebaseAuth.getInstance();
         this.model = model;
         this.holder = holder;
+
+
         // Add firstname from model class (here
         // "person.class")to appropriate view in Card
         // view (here "person.xml")
@@ -109,10 +107,29 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<
 
                     }
                 }*/
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                holder.imgBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(con, snapshot.toString(), Toast.LENGTH_LONG).show();
+                    reqAccept();
+                            }
+                });
+                holder.btnDeny.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        friendRequestDB.child(getRef(position).getKey()).child(fAuth.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                friendRequestDB.child(fAuth.getUid()).child(getRef(position).getKey()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        holder.itemView.setVisibility(View.GONE);
+                                        holder.itemView.getLayoutParams().height = 0;
+                                        holder.itemView.getLayoutParams().width = 0;
+                                    }
+                                });
+
+                            }
+                        });
                     }
                 });
             }
@@ -150,12 +167,15 @@ public class RequestAdapter extends FirebaseRecyclerAdapter<
         TextView fname;
         ImageButton imgBtn;
         ImageView profilePic;
+        ImageButton btnDeny;
+
 
         public personsViewholder(@NonNull View itemView) {
             super(itemView);
 
             fname = itemView.findViewById(R.id.fnameRequest);
-            imgBtn = itemView.findViewById(R.id.requestBtn);
+            imgBtn = itemView.findViewById(R.id.requestBtnAccept);
+            btnDeny = itemView.findViewById(R.id.requstBtnDeny);
             profilePic = itemView.findViewById(R.id.requestAvatar);
 
 

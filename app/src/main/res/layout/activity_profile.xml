@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/displayName" />
 
     <Button
-        android:id="@+id/requestBtn"
+        android:id="@+id/requestBtnAccept"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send Friend Request"
@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Total friends"
-        app:layout_constraintBottom_toTopOf="@+id/requestBtn"
+        app:layout_constraintBottom_toTopOf="@+id/requestBtnAccept"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/statusProfile"
