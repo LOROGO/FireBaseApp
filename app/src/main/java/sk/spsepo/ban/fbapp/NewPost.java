@@ -42,7 +42,7 @@ public class NewPost extends AppCompatActivity {
         setContentView(R.layout.activity_new_post);
 
         postImage = findViewById(R.id.postImg);
-        postDesc = findViewById(R.id.newPostBtn);
+        postDesc = findViewById(R.id.newPostDesc);
         postAdd = findViewById(R.id.newPostBtn);
 
         mPostDatabase = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReferenceFromUrl("https://fbapp-ba93b-default-rtdb.firebaseio.com/").child("Posts");
@@ -52,6 +52,8 @@ public class NewPost extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAspectRatio(1,1)
                         .start(NewPost.this);
 
 
@@ -60,8 +62,9 @@ public class NewPost extends AppCompatActivity {
         postAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String postId = Calendar.getInstance().getTime().toString()+mCurrentUser.getUid();
+                final String postId = Calendar.getInstance().getTimeInMillis()+mCurrentUser.getUid().replace(" ", "-");
                 final StorageReference imgPath = storageRef.child("posts").child(postId);
+                final String desc = postDesc.getText().toString();
 
 
 
@@ -72,8 +75,8 @@ public class NewPost extends AppCompatActivity {
                         imgPath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(final Uri uri) {
-                                mPostDatabase.child(postId).child("image").setValue(uri.toString()+".jpg");
-                                mPostDatabase.child(postId).child("description").setValue(postDesc.getText().toString());
+                                mPostDatabase.child(postId).child("image").setValue(uri.toString());
+                                mPostDatabase.child(postId).child("description").setValue(desc);
                                 mPostDatabase.child(postId).child("UID").setValue(mCurrentUser.getUid());
                                 mPostDatabase.child(postId).child("datetime").setValue(Calendar.getInstance().getTime().toString());
                                 Toast.makeText(NewPost.this, uri.toString(), Toast.LENGTH_LONG).show();
@@ -99,7 +102,7 @@ public class NewPost extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 resultUri = result.getUri();
-                postImage.setImageURI(data.getData());
+                postImage.setImageURI(resultUri);
 
 
 

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +38,9 @@ public class ChatsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     View parentHolder;
+    RecyclerView recyclerView;
+    DatabaseReference databaseReference;
+    PostAdapter adapter;
 
 
 
@@ -76,15 +82,27 @@ public class ChatsFragment extends Fragment {
         parentHolder = inflater.inflate(R.layout.fragment_chats, container, false);
 
 
-        /*Button chatsButton = (Button) parentHolder.findViewById(R.id.chatsButton);
-        chatsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(getActivity(), Login.class));
-                getActivity().finish();
-            }
-        });*/
+        recyclerView = parentHolder.findViewById(R.id.postRecyclerView);
+        databaseReference = FirebaseDatabase.getInstance("https://fbapp-ba93b-default-rtdb.firebaseio.com/").getReferenceFromUrl("https://fbapp-ba93b-default-rtdb.firebaseio.com/");
+
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+
+        FirebaseRecyclerOptions<Post> options
+                = new FirebaseRecyclerOptions.Builder<Post>()
+                .setQuery(databaseReference.child("Posts").limitToLast(20), Post.class)
+                .build();
+
+        adapter = new PostAdapter(options, getActivity());
+
+        // Connecting Adapter class with the Recycler view*/
+        recyclerView.setAdapter(adapter);
+
+
         FloatingActionButton postButton = parentHolder.findViewById(R.id.addPostButton);
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,5 +117,20 @@ public class ChatsFragment extends Fragment {
     }
     public void load(String UID){
 
+    }
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    // Function to tell the app to stop getting
+    // data from database on stoping of the activity
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        adapter.stopListening();
     }
 }

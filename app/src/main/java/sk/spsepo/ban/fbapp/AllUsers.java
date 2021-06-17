@@ -73,14 +73,12 @@ public class AllUsers extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Query a = mbase.child("Users").orderByChild("fname").startAt("Ris").endAt("Ris"+"\uf8ff");
+                Query a = mbase.child("Users").orderByChild("fname").startAt(searchBar.getText().toString()).endAt(searchBar.getText().toString()+"\uf8ff");
                 FirebaseRecyclerOptions<Person> options
                         = new FirebaseRecyclerOptions.Builder<Person>()
-                        .setQuery(mbase.child("Users").orderByChild("fname").startAt("Ris").endAt("Ris"+"\uf8ff"), Person.class)
+                        .setQuery(a, Person.class)
                         .build();
-                adapter = new PersonAdapter(options, AllUsers.this);
-                recyclerView.setAdapter(adapter);
-                Toast.makeText(AllUsers.this, searchBar.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+                adapter.updateOptions(options);
             }
         });
     }

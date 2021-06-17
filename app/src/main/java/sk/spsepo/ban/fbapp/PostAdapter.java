@@ -2,17 +2,16 @@ package sk.spsepo.ban.fbapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,15 +24,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-// FirebaseRecyclerAdapter is a class provided by
-// FirebaseUI. it provides functions to bind, adapt and show
-// database contents in a Recycler View
-
-
-public class FriendsAdapter extends FirebaseRecyclerAdapter<
-        Person, FriendsAdapter.personsViewholder> {
-    Person model;
-    personsViewholder holder;
+public class PostAdapter extends FirebaseRecyclerAdapter<
+        Post, PostAdapter.postsViewholder> {
+    Post model;
+    PostAdapter.postsViewholder holder;
     Context con;
     DatabaseReference databaseReference;
     ArrayList<String> a;
@@ -41,8 +35,8 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
     FirebaseAuth fAuth;
     int position;
 
-    public FriendsAdapter(
-            @NonNull FirebaseRecyclerOptions<Person> options, FragmentActivity fragmentActivity)
+    public PostAdapter(
+            @NonNull FirebaseRecyclerOptions<Post> options, FragmentActivity fragmentActivity)
     {
         super(options);
         con = fragmentActivity;
@@ -54,8 +48,8 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
 
     @Override
     protected void
-    onBindViewHolder(@NonNull final personsViewholder holder,
-                     final int position, @NonNull Person model)
+    onBindViewHolder(@NonNull final PostAdapter.postsViewholder holder,
+                     final int position, @NonNull final Post model)
     {
         this.position = position;
         a = null;
@@ -65,51 +59,60 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
         fAuth = FirebaseAuth.getInstance();
         this.model = model;
         this.holder = holder;
-        // Add firstname from model class (here
-        // "person.class")to appropriate view in Card
-        // view (here "person.xml")
-        holder.fname.setText(model.getFname());
+
+
 
         // Add lastname from model class (here
         // "person.class")to appropriate view in Card
         // view (here "person.xml")
-        holder.status.setText(model.getStatus());
-        Picasso.with(con).load(model.getImage()).into(holder.personAvatar);
+        holder.postDesc.setText(model.getDescription());
+        Picasso.with(con).load(model.getImage()).into(holder.postImg);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        /*holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((MainActivity)con).change2chat(fAuth.getUid());
 
 
             }
+        });*/
+        databaseReference.child("Users").child(model.getUID()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                holder.userNamePost.setText(snapshot.child("fname").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
 
-        databaseReference.child("friendList").child(fAuth.getUid()).child(getRef(position).getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("friendList").child(fAuth.getUid()).child(model.getUID()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot snapshot) {
-                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
 
+
+
+                if (snapshot.getValue()!=null){
+                    aa = true;
+                }else aa = false;
                 try {
                     if (snapshot.getValue().toString().isEmpty()) {
                         holder.itemView.setVisibility(View.VISIBLE);
-                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(con, ChatActivity.class);
-                                intent.putExtra("UID", getRef(position).getKey());
-                                con.startActivity(intent);
-                            }
-                        });
+
 
 
                     }
-                }catch (NullPointerException e){
-                    holder.itemView.getLayoutParams().height = 0;
-                    holder.itemView.getLayoutParams().width = 0;
-                };
-
-
+                }catch (NullPointerException e) {
+                    if (model.getUID().equals(fAuth.getUid())) {
+                        holder.itemView.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.itemView.setVisibility(View.GONE);
+                        holder.itemView.getLayoutParams().height = 0;
+                        holder.itemView.getLayoutParams().width = 0;
+                    }
+                }
             }
 
             @Override
@@ -124,6 +127,7 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
 
 
 
+
     }
 
     // Function to tell the class about the Card view (here
@@ -131,41 +135,37 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
     // which the data will be shown
     @NonNull
     @Override
-    public personsViewholder
+    public PostAdapter.postsViewholder
     onCreateViewHolder(@NonNull final ViewGroup parent,
                        int viewType)
     {
-
-
         View view
                 = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.person, parent, false);
+                .inflate(R.layout.post, parent, false);
         //Picasso.with(parent.getContext()).load(model.getImage()).into(holder.personAvatar);
 
 
 
 
         //Picasso.with(parent.getContext()).load(Uri.parse(model.getImage())).into(holder.personAvatar);
-        return new FriendsAdapter.personsViewholder(view);
+        return new PostAdapter.postsViewholder(view);
     }
+
+
 
     // Sub Class to create references of the views in Crad
     // view (here "person.xml")
-    class personsViewholder
+    class postsViewholder
             extends RecyclerView.ViewHolder {
-        TextView fname, status;
-        ImageView personAvatar;
-        public personsViewholder(@NonNull View itemView)
+        TextView userNamePost, postDesc;
+        ImageView postImg;
+        public postsViewholder(@NonNull View itemView)
         {
-
             super(itemView);
 
-
-
-            fname = itemView.findViewById(R.id.fnamePerson);
-            status = itemView.findViewById(R.id.statusPerson);
-            personAvatar = itemView.findViewById(R.id.personAvatar);
-            itemView.setVisibility(View.VISIBLE);
+            userNamePost = itemView.findViewById(R.id.userNamePost);
+            postDesc = itemView.findViewById(R.id.postDesc);
+            postImg = itemView.findViewById(R.id.postImg);
 
 
         }

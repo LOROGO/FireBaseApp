@@ -37,6 +37,7 @@ public class FriendsFragment extends Fragment {
     DatabaseReference databaseReference;
     FriendsAdapter adapter;
     View parentHolder;
+    FirebaseRecyclerOptions<Person> options;
 
     public FriendsFragment() {
         // Required empty public constructor
@@ -89,7 +90,7 @@ public class FriendsFragment extends Fragment {
         //mbase.child("friendList").child(fAuth.getUid())
 
 
-        FirebaseRecyclerOptions<Person> options
+        options
                 = new FirebaseRecyclerOptions.Builder<Person>()
                 .setQuery(databaseReference.child("Users"), Person.class)
                 .build();
@@ -125,6 +126,5 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        recyclerView.setAdapter(adapter);
     }
 }
