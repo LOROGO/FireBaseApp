@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -34,6 +35,7 @@ public class ChatsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     View parentHolder;
+
 
 
     public ChatsFragment() {
@@ -83,6 +85,13 @@ public class ChatsFragment extends Fragment {
                 getActivity().finish();
             }
         });*/
+        FloatingActionButton postButton = parentHolder.findViewById(R.id.addPostButton);
+        postButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), NewPost.class));
+            }
+        });
 
         return parentHolder;
 

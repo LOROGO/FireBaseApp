@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -13,10 +16,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.Objects;
+
 public class AllUsers extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EditText searchBar;
+    private ImageButton searchBtn;
     PersonAdapter
             adapter; // Create Object of the Adapter class
     DatabaseReference mbase; // Create object of the
@@ -38,6 +44,7 @@ public class AllUsers extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         searchBar = findViewById(R.id.search_bar);
+        searchBtn = findViewById(R.id.searchBtn);
 
         // To display the Recycler view linearly
         recyclerView.setLayoutManager(
@@ -46,11 +53,15 @@ public class AllUsers extends AppCompatActivity {
         // It is a class provide by the FirebaseUI to make a
         // query in the database to fetch appropriate data
         //mbase.child("friendList").child(fAuth.getUid())
-        Query s = mbase.child("Users").child(mbase.child("friendList").child(fAuth.getUid()).getKey());
+        Query s = mbase.child("Users");
         FirebaseRecyclerOptions<Person> options
                 = new FirebaseRecyclerOptions.Builder<Person>()
-                .setQuery(mbase.child("Users"), Person.class)
+                .setQuery(s, Person.class)
                 .build();
+
+
+
+
         // Connecting object of required Adapter class to
         // the Adapter class itself
 
@@ -58,8 +69,23 @@ public class AllUsers extends AppCompatActivity {
 
         // Connecting Adapter class with the Recycler view*/
         recyclerView.setAdapter(adapter);
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Query a = mbase.child("Users").orderByChild("fname").startAt("Ris").endAt("Ris"+"\uf8ff");
+                FirebaseRecyclerOptions<Person> options
+                        = new FirebaseRecyclerOptions.Builder<Person>()
+                        .setQuery(mbase.child("Users").orderByChild("fname").startAt("Ris").endAt("Ris"+"\uf8ff"), Person.class)
+                        .build();
+                adapter = new PersonAdapter(options, AllUsers.this);
+                recyclerView.setAdapter(adapter);
+                Toast.makeText(AllUsers.this, searchBar.getText().toString().trim(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+
 
     // Function to tell the app to start getting
     // data from database on starting of the activity

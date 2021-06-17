@@ -88,33 +88,36 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
         databaseReference.child("friendList").child(fAuth.getUid()).child(getRef(position).getKey()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot snapshot) {
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.itemView.getLayoutParams();
 
 
                 if (snapshot.getValue()!=null){
                     aa = true;
                 }else aa = false;
+                holder.itemView.getLayoutParams().height = 0;
+                holder.itemView.setVisibility(View.GONE);
                 if (aa){
+                    holder.itemView.setVisibility(View.VISIBLE);
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(con, ChatActivity.class);
                             intent.putExtra("UID", getRef(position).getKey());
                             con.startActivity(intent);
-                            holder.itemView.setVisibility(View.VISIBLE);
-                            holder.itemView.getLayoutParams().height = 100;
-                            holder.itemView.getLayoutParams().width = 600;
+
+
+
 
 
                         }
                     });
-                }else if (!aa){
-
-                    holder.itemView.setVisibility(View.GONE);
+                }else if(!aa){
                     holder.itemView.getLayoutParams().height = 0;
-                    holder.itemView.getLayoutParams().width = 0;
-
-
+                    holder.itemView.setVisibility(View.GONE);
+                }else{
+                    holder.itemView.setVisibility(View.VISIBLE);
                 }
+
 
             }
 
@@ -141,6 +144,8 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
     onCreateViewHolder(@NonNull final ViewGroup parent,
                        int viewType)
     {
+
+
         View view
                 = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.person, parent, false);
@@ -161,11 +166,15 @@ public class FriendsAdapter extends FirebaseRecyclerAdapter<
         ImageView personAvatar;
         public personsViewholder(@NonNull View itemView)
         {
+
             super(itemView);
+
+
 
             fname = itemView.findViewById(R.id.fnamePerson);
             status = itemView.findViewById(R.id.statusPerson);
             personAvatar = itemView.findViewById(R.id.personAvatar);
+            itemView.setVisibility(View.VISIBLE);
 
 
         }
